@@ -18,7 +18,7 @@ Exercise-1
 
 5) create container within custom network
 
-   $ sudo docker --dt --net=mynetwork --name=mycontainer ubuntu:20.04 
+   $ sudo docker run --dt --net=mynetwork --name=mycontainer ubuntu:20.04 
 
 
 

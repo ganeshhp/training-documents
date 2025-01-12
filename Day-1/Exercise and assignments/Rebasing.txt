@@ -1,0 +1,27 @@
+### Rebasing a branch.
+
+## create two more branches, 'feature1' and 'feature2' from development branch.
+
+## switch to feature1 branch and add a new file. Add and Commit the changes to the feature1 branch.
+
+$ git switch feature1
+
+$ nano file3.txt
+
+$ git add file3.txt
+
+$ git commit -m "file3.txt added to feature1 branch"
+
+### now performed similar steps on the feature2 branch after switching to feture2 branch.
+
+$ git switch feature2
+
+$ nano file4.txt
+
+$ git add file4.txt
+
+$ git commit -m "file4.txt added to feature2 branch"
+
+### now we have to merge the feature1 branch to development branch and then merge development master.
+### now in order to get the contents of development into feature2 branch we will have merge the development branch to feature2, but this time we will perform rebase instead of merge.
+

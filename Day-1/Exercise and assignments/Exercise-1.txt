@@ -1,0 +1,52 @@
+### install / validate git version on Lab machine.
+
+$ sudo apt-get install git
+
+$ git version
+
+## create / initiate a fresh local repository.
+
+$ git init <foldername>  ... to initiate repository from outside the folder.
+
+## or, we can initiate a git repository inside an existing project folder.
+
+$ git init
+
+### Once the repository is initiated inside the folder move inside the folder. Configure user for local repository.
+
+$ cd <project_folder_name>
+
+$ git config --local user.name "username" ... replace the username with your user's name.
+
+$ git config --local user.email "email-id" ... replace the email-id with your user's email-id.
+
+$ git config --global user.name "username"
+
+$ git config --global user.email "email-id"
+
+## navigate to user's home directory and check the file '.gitconfig'.
+
+### Now adding a new file to the project repository.
+
+$ nano file.txt 
+
+### add some file contents to the newly created file.
+
+$ git add <filename>
+
+### commit the changes to the repository database
+
+$ git commit -m "comments"
+
+### moving / renaming an existing file inside repository
+
+$ git mv <filename> <new-filename>
+
+### to verify file changes against existing file version.
+
+$ git diff HEAD .... or,
+
+$ git diff rev1 rev2
+
+$ git diff --cached   ... find difference between staged file and existing version.
+

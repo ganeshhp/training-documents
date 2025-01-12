@@ -1,0 +1,31 @@
+Exercise-3
+
+1) create a container
+   $ docker run -it --name webserver ubutnu:latest
+
+    $ root@kj923239# apt install apache2 curl
+    $ root@kj923239# apt update
+    $ root@kj923239# exit
+
+2) create docker image from a running / existing container
+
+   $ docker ps -a
+
+   $ docker commit <container-name> <image-name>
+
+3) validate docker image structure 
+
+   $ docker history <image-id>
+
+4) create a container from custom image
+
+   $ docker run -it --name webserver <image id>
+
+   $ root@2349243# apt autoremove curl apache2
+
+   $ root@2349243# exit
+
+   $ docker commit container-id image-name:tag
+
+5) Note the docker intermediate container and image layer structure
+6) note the read-only and writable layers in container structure

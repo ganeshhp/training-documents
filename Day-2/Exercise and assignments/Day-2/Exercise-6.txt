@@ -1,0 +1,35 @@
+Exercise -3
+
+Example: sample dockerfile for Apache webserver
+1) Write first Dockerfile for Apache webserver. 
+
+# Filename as Dockerfile
+
+$ nano Dockerfile
+
+  FROM ubuntu:18.04
+  RUN apt update -y
+  RUN apt install apache2 -y
+  RUN apt install curl -y
+  COPY ./index.html /var/www/html/
+  EXPOSE 80
+  CMD ["apachectl", "-D", "FOREGROUND"]
+
+# save the file
+
+# create a HTML file
+$ echo "Hello World" > index.html
+  
+2) Build Dockerfile with command,
+
+ $ sudo docker build -t=webserver:latest .
+
+3) Inspect the newly created image with history command.
+
+ $ sudo docker history webserver:latest
+
+4) deploy container using the image.
+
+  $ sudo docker run -dt -p 8080:80 webserver:latest
+
+

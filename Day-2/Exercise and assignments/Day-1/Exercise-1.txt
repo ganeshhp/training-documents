@@ -1,0 +1,16 @@
+Exercise -1 
+
+
+  
+1) Install Docker-ce on Linux-VM using online documentation at below link
+  https://docs.docker.com/engine/install/ubuntu/
+
+2) Check version and service status.
+  $ docker version
+  $ sudo systemctl status docker
+  $ sudo systemctl enable docker
+  $ sudo systemctl start docker
+
+3) Validate network interface on VM.
+  $ ip address
+

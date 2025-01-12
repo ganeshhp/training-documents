@@ -1,0 +1,9 @@
+Exercise-2
+
+1) Deploying docker container with volume mount
+
+   $ docker run -it -v /data:/data ubuntu:latest
+
+2) copy files to the /data directory on Docker Host and validate file avaibility inside the container
+
+3) Create file inside container in /data folder. validate file avaibility outside  on docker host in /data folder.

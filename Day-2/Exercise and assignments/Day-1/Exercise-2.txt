@@ -1,0 +1,18 @@
+Exercise -2 
+
+1) Pull Container Image from Docker Image registry
+   $ docker pull ubuntu:latest
+2) create container using the pulled image
+   $ docker create -it --name mycontainer ubuntu:latest
+3) start container
+   $ docker start mycontainer
+4) validate container status
+   $ docker ps -a
+5) get attached to the container
+   $ docker attach mycontainer
+6) stop container
+   $ docker stop mycontainer
+7) remove the container
+   $ docker rm mycontainer
+8) create and run container
+   $ docker run -it --name mycontainer ubuntu:latest

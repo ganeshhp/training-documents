@@ -1,0 +1,58 @@
+### Creating Branches
+
+## How to list current branches.
+
+$ git branch
+
+## How to create a new branch, name the branch as 'development'
+
+$ git branch development
+
+## List the branches again
+
+$ git branch
+
+### How to switch to the new branch
+
+$ git checkout / switch development
+
+### run 'git branch' command and note which branch is active.
+### move into the .git/refs folder and note the folder / file created there.
+### run the tree command to view how folder and files are referred.
+
+## add a new file and commit the file to the branch.
+$ git add file2.txt
+$ git commit -m "new file added to development branch"
+
+## switch to master / main branch.
+
+$ git switch master
+
+## merge development hash objects to main/master.
+
+$ git merge development
+
+## note the fast-forward merge.
+
+### Follow below steps to check how Recursive Merge process works.
+## Make changes to the file again while inside the master branch and commit the changes to master branch.
+
+$ nano file2.txt
+
+$ git add file2.txt
+
+$ git commit -m "file.txt updated and added to master branch"
+
+## now switch to master branch again and update the file2.txt file with different changes than the one done in master branch.
+
+## add and commit the file2.txt changes to development branch
+
+$ git add file2.txt
+$ git commit -m "file2.txt updated and added to development branch"
+
+## now move to master branch again and merge the development branch to master.
+
+$ git switch master
+$ git merge development
+
+## note the recursive merge.

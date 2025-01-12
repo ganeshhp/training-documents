@@ -1,0 +1,20 @@
+## In order to connect to remote repository we use below commands.
+## First we setup the remote repository reference in the local repository.
+
+$ git remote add <remote-repo-alias-name> <remote-repo-link-with-ssh-credentials>
+
+## once the reference is added we can list and view the details using below commands.
+
+$ git remote
+
+$ git remote show <remote-repo-alias-name>
+
+## On GitHub or GitLab add the 'ssh public' key for the user to which we want to allow access to the repository.
+## use git push command to push local repository objects to the remote repository.
+
+$ git push <remote-repo-alias-name> <branch-name>
+
+## On GitHub or GitLab add and commit a file manually.
+## now pull the newly added file to local repository using git pull command.
+
+$ git pull <remote-repo-alias-name> <branch-name>

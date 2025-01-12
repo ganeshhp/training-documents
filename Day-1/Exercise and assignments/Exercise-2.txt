@@ -1,0 +1,36 @@
+
+## Run all below commands from inside the project repository folder.
+## Inside the Git project repository folder, list repository versions.
+
+$ git log
+
+$ git log -p
+
+$ git log -p --graph
+
+### check the status of repository files
+
+$ git status
+
+### browse through the repository folder. The .git folder is the git database folder where all database related files and folders are located.
+
+$ ls -la
+$ cd .git
+
+## check the config file
+
+$ cat config
+
+$ cd objects
+
+## check the HASH objects
+
+## Now create and git add aa file to the repository.
+## check the changes in the objects folder inside .git folder.
+
+# now commit the staged changed to the local repo. and check the objects folder contents.
+
+## check the contents of HEAD file
+
+$ cat HEAD
+

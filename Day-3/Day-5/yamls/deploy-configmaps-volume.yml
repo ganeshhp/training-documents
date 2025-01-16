@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-cm-file
+spec:
+  selector:
+    matchLabels:
+      app: myapp-cm
+  template:
+    metadata:
+      labels:
+        app: myapp-cm
+    spec:
+      containers:
+      - name: myapp-cm
+        image: httpd:latest
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: appconfig
+          mountPath: "/etc/appconfig"
+      volumes:
+        - name: appconfig
+          configMap:
+            name: appconfigqa

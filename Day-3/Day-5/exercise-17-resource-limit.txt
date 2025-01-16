@@ -1,0 +1,32 @@
+### Let's understand how Resources are requested and also limited to use resources.
+
+## create a file resource-pod.yml
+
+$ nano resource-pod.yml
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: frontend
+spec:
+  containers:
+  - name: app
+    image: httpd:2.4
+    resources:
+      requests:
+        memory: "500Mi"
+        cpu: "250m"
+      limits:
+        memory: "1Gi"
+        cpu: "500m"
+  initContainer:
+  - name: log-aggregator
+    image: alpine:latest
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "150m"
+      limits:
+        memory: "128Mi"
+        cpu: "300m"

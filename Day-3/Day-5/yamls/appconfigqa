@@ -1,0 +1,2 @@
+DATABASE_SERVERNAME="sqlqa.example.com"
+BACKEND_SERVERNAME="beqa.example.com"

@@ -1,0 +1,20 @@
+Exercise -1
+
+1) Clone the git repository from https://github.com/ganeshhp/install-kube-cluster.git
+
+2) Move into the git repository and open the file install-kube-cp.sh file in editor.
+
+3) Understand the shell script steps. and run the shell script. Make sure the script is in executable form.
+
+4) $ sudo chmod +x install-kube-cp.sh
+
+5) ./install-kube-cp.sh 
+
+6) The script will install all required services like, containerd, kubelet and binaries like, kubectl and kubeadm on the control-plane server. This will also initialize the kubernetes cluster and install the required calico network interface.
+Follow all steps as prompted during the script installation.
+
+7) Install the kubernetes component on the worker node as well. This is to be done using the script, install-wrk-node.sh. Once installed, run the kubeadm join command in sudo mode with cert and token added to the command, copied from the control-plane server, cluster initiation logs.
+
+ 
+
+

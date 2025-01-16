@@ -1,0 +1,91 @@
+Exercise-2
+
+### now, to access the application on network port, we have to expose the application running in the container onto a specific network port.
+
+### cluster-IP Service. This is the default service type that gets created when we do not specify the service type.
+
+Here's a ClusterIP service manifest:
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+spec:
+  selector:
+    name: myapp
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+
+
+
+$ kubectl get service/kube-dns --namespace=kube-system -o yaml
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    k8s-app: kube-dns
+    kubernetes.io/cluster-service: "true"
+    kubernetes.io/name: CoreDNS
+  name: kube-dns
+  namespace: kube-system
+spec:
+  clusterIP: 10.96.0.10
+  ports:
+  - name: dns
+    port: 53
+    protocol: UDP
+    targetPort: 53
+  - name: dns-tcp
+    port: 53
+    protocol: TCP
+    targetPort: 53
+  selector:
+    k8s-app: kube-dns
+  type: ClusterIP
+
+---------------------------------
+NodePort Service
+
+### Exposes the Service on each Node's IP at a static port (the NodePort). To make the node port available, Kubernetes sets up a cluster IP address, the same as if you had requested a Service of type: ClusterIP.
+## Use the imperative way, using expose command. Let's run the command using dry-run option first.
+
+$ kubectl expose deployment webserver --port=80 --target-port=80 --type=NodePort --dry-run=client -o yaml | tee service.yml
+
+### service.yml file
+
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: webserver
+  name: webserver
+  namespace: webapp
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+    nodePort: 32000
+  selector:
+    app: webserver
+  type: NodePort
+status:
+  loadBalancer: {}
+
+
+### pay attention to the labels and selector key:value pair.
+
+### run the describe command on Service.
+
+$ kubectl describe service/webserver --namespace=webapp
+
+### Note the endpoint address in the Service configuration.
+
+### application service running under replication controller or deployment can be exposed using the service object.
+
+$ kubectl expose rc webserver-rc --name=web-service --port=80 --nodeport=32000 --type=NodePort
+

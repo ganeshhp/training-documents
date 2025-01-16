@@ -1,0 +1,33 @@
+Exercise -2 
+
+###1) On the control-plane server, under user profile folder, look for .kube folder.
+
+###2) Open the config file in an editor. Look for the Cluster information, Cluster context information and user information. This will make sure user authentication on the cluster using the kubectl command.
+
+###3) run below command,
+
+$ kubectl config --help
+
+$ kubectl config get-contexts
+
+$ kubectl config current-context
+
+$ kubectl cluster-info
+
+###4) Cluster api-Resources: The Kubernetes API is a resource-based (RESTful) programmatic interface provided via HTTP. It supports retrieving, creating, updating, and deleting primary resources via the standard HTTP verbs (POST, PUT, PATCH, DELETE, GET).
+### List all available api-resources in the cluster.
+
+$ kubectl api-resources
+
+$ kubectl api-resources --namespaced=true/false
+
+$ kubectl api-resources --api-group='' 
+
+$ kubectl api-resources -o wide
+
+$ kubectl explain <resource-name>
+
+## explain command can be used on the api-resources by extending the fields interpolating.
+
+$ kubectl explain <resource-name>.<field>.<sub-field>
+

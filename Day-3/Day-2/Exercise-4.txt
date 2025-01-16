@@ -1,0 +1,103 @@
+Exercise-1
+
+POD Controller api-objects:
+1) ReplicaSets
+2) Deployments
+3) DaemonSets
+4) StatefulSets
+5) Jobs
+6) CronJobs
+
+### First we will look at the Replication Controller object and then we will extent out understanding to replicaset.
+
+## create a manifest file (rc.yml) and update it with below code.
+
+apiVersion: v1
+kind: ReplicationController
+metadata:
+   name: webapp-rc
+spec:
+   replicas: 2
+   selector:
+      app: webapp
+   template:
+      metadata:
+         labels:
+            app: webapp
+      spec:
+         containers:
+         - name: webapp-pod
+           image: httpd:latest
+           ports:
+           - containerPort: 80
+
+### save the file and run the manifest to create the Object
+### observe the events.
+
+$ kubectl get events --watch &
+
+$ kubectl create -f rc.yml
+
+## get details about the RC.
+
+$ kubectl describe rc/webapp-rc
+
+### replication Controller makes sure to keep the required number of PODs running as DSC.
+### So, if we happen to delete any of the POD, the RC will make sure to create a replica of POD in place of removed POD.
+
+### remove the replication Controller,
+
+$ kubectl delete -f rc.yml
+
+### Deployment Object ####  Try running the get events verb with --watch option before running the deployment.###
+
+$ kubectl get events --watch &
+
+## Now, let's create a deployment object first imperatively, using below command.
+
+$ kubectl create deployment webserver --image=httpd:latest --replicas=2 --namespace=webapp
+
+### this will create a deployment object along with a ReplicaSet.
+
+$ kubectl get deployment --namespace=webapp
+
+## observe the events as part of deployment object creation.
+
+## ctrl-c and 
+## remove the deployment object.
+
+$ kubectl delete deployment/webserver --namespace=webapp
+
+### let's use the dry-run option with output redirected to a YAML file.
+
+$ kubectl create deployment webserver --image=httpd:latest --replicas=2 --namespace=webapp --dry-run=client -o yaml | tee deployment.yml
+
+## also check the server side manifest with dry-run option set as server.
+
+$ kubectl create deployment webserver --image=httpd:latest --replicas=2 --namespace=webapp --dry-run=server -o yaml | tee deployment-serverside.yml
+
+## deploy the deployment object using the yaml file declaratively.
+
+$ kubectl create / apply -f deployment.yml
+
+### run below command to get more details about the deployment object.
+
+$ kubectl describe deployment/webserver --namespace=webapp
+
+## observe the replicaSet object created with deployment object. Note the annotation key:value
+
+$ kubectl get replicaset --namespace=webapp
+
+## we can also get labels updated on running POD using label command.
+
+$ kubectl label pod <pod-name> app=newlabel --overwrite
+
+## if we want to update existing deployment object with a new container image, we can use the set command.
+
+$ kubectl set image deployment webserver httpd:6.4 --record
+
+### adding --record also makes sure this image change is updated in the annotation.
+
+
+
+

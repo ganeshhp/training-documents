@@ -1,0 +1,40 @@
+$ sudo kubectl create deployment webserver --image=httpd:2.4 --replicas=4 --dry-run=client -o yaml > newdeploy.yml
+
+## edit file newdeploy.yml
+
+1) Rollout deployment
+
+   ## edit the deployment manifest
+    replicas: 10
+    ...
+    minReadySeconds: 20
+    strategy:
+      type: RollingUpdate
+      rollingUpdate:
+        maxUnavailable: 1
+        maxSurge: 1
+
+   # deploy a deployment resource.
+   # check the status and manage deployment
+   $ kubectl rollout status deployment <deployment-name>
+
+   $ kubectl rollout pause deployment <deployment-name>
+   $ kubectl rollout resume deployment <deployment-name>
+
+   $ kubectl rollout history deployment <deployment-name> 
+2) Validate annotation and revisions
+
+   check annotations version
+
+   $ kubectl describe deployment <deployment-name>
+3) Rollback deployment
+
+   $ kubectl rollout history deployment <deployment-name>
+
+   # rollback to last deployment
+
+   $ kubectl rollout undo deployment <deployment-name> 
+
+   # rollback to particular version
+
+   $ kubectl rollout undo deployment <deployment-name> --to-revision=2  

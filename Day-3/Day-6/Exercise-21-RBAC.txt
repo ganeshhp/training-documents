@@ -1,0 +1,134 @@
+### RBAC is used for authorization of access rights on cluster resources for users / service accounts.
+
+1) This allows the requester to perform actions on resources
+2) Restful API semantics -- Verbs or Now (get, list, create, delete)
+3) Default access is deny, rules are written to permit actions on resources.
+4) Roles define, what can be done to the resources. Roles are made-up of rules.
+5) roles are  namespaced, and there's no deny permission.
+6) Cluster roles are above the cluster level. Enables access to resources that are not Namespaced. e.g. Nodes, PV, etc.
+7) Cluster roles can also be used to provide access to multiple namespaces and resources within.
+
+RoleBinding:
+Defines the subject will get which verb and targeted cluster / namespace.
+
+-------------------------------------------------------------------
+
+## let's start with creating a deployment object in our namespace.
+
+$ kubectl create deployment nginx --image=nginx -n webapp
+
+## now let's get a manifest file created from command in dry-run mode.
+
+$ kubectl create role newrole --verb=get,list --resource=pods -n webapp --dry-run=client -o yaml | tee role-pod.yml
+
+$ kubectl create -f role-pod.yml
+
+### Now, take this role and attach it to a subject using RoleBinding using dry-run again.
+
+$ kubectl create rolebinding newrolebinding --role=newrole --user=newuser -n webapp --dry-run=client -o yaml | tee rolebinding.yml
+
+$ kubectl create -f rolebinding.yml
+
+### let's test access for the user to the cluster resources.
+
+$ kubectl auth can-i list pods     #### here we are using the default kubernetes-admin user
+
+$ kubectl auth can-i list pods --as=newuser ### add namespace
+
+$ kubectl auth can-i list pods --as=newuser -n webapp  ### correct test
+
+$ kubectl auth can-i list deployment --as=newuser -n webapp    ### rules not applied for deployment object.
+
+### get pods information in webapp namespace,
+
+$ kubectl get pods -l app=nginx -n webapp --as=newuser
+
+$ kubectl delete pod/<podname> -n webapp --as=newuser
+
+---------------
+
+ClusterRole:
+### let's try to query cluster wide resources like Nodes.
+
+$ kubectl auth can-i list nodes --as=newuser
+
+$ kubectl get nodes --as=newuser
+
+### so, let's create a clusterrole and ClusterRoleBinding.
+
+$ kubectl create clusterrole newclusterrole --verb=get, list --resource=nodes
+
+### let's create ClusterRoleBinding, so that we get user assigned with access to query cluster resources.
+
+$ kubectl create ClusterRoleBinding newclusterrolebinding --clusterrole=newclusterrole --user=newuser
+
+## let's try testing the access.
+
+$ kubectl auth can-i list nodes --as=newuser
+
+$ kubectl get nodes --as=newuser
+
+------------------------------------------
+
+### now, let's combine the clusterrole with rolebinding to give access for a clusterrole to a specific namespace using RoleBinding.
+
+### First, we will create one more namespace.
+
+$ kubectl create namespace webapp2
+
+$ kubectl create deployment nginx2 --image=nginx -n webapp2
+
+$ kubectl get deployment --as=newuser -n webapp2   ### so we see that the user newuser does not have access to run get query on the object in webapp2 namespace.
+
+### we can try creating a clusterrole and then allocated the user access to multiple namespaced using rolebinding.
+
+## let's remove the role and rolebinding for namespace webapp.
+
+$ kubectl delete rolebinding newrolebinding --namespace webapp
+
+$ kubectl delete role newrole --namespace=webapp
+
+### Now, create the clusterrole.
+
+$ kubectl create clusterrole newclusterrole-pods --verb=get,list --resource=pods
+
+## create rolebinding to refer the cluster role and assign required access for the subject (user) to both namespaces
+
+$ kubectl create rolebinding newrolebinding-pods --clusterrole=newclusterrole-pods --user=newuser --namespace=webapp
+$ kubectl create rolebinding newrolebinding-pods --clusterrole=newclusterrole-pods --user=newuser --namespace=webapp2 
+
+## test the access for the user
+
+$ kubectl auth can-i list pods --as=newuser --namespace webapp
+$ kubectl auth can-i list pods --as=newuser --namespace webapp2
+
+## run the command to list pods.
+
+$ kubectl get pods --as=newuser -n webapp
+$ kubectl get pods --as=newuser -n webapp2
+
+###  We can give a user full access to a user on a certain namespace.
+
+$ kubectl create role newrole-deployment --verb=* --resource=deployment -n webapp
+
+## let's now create the rolebinding.
+
+$ kubectl create rolebinding newrolebinding-deployment --role=newrole-deployment --user=newuser -n webapp
+
+## switch to newuser.
+
+$ sudo su newuser
+
+$ kubectl get deployment -n webapp
+$ kubectl get pods -n webapp
+
+## as we have got full access to the deployment object in webapp namespace.
+
+$ kubectl describe deployment nginx --n webapp
+
+$ kubectl set image deployment nginx nginx:1.19.1 -n webapp
+
+$ kubectl describe deployment nginx -n webapp
+
+
+

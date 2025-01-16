@@ -1,0 +1,50 @@
+Exercise-3
+
+1) ## Understanding Namespace in Cluster: Namespaces are a way to organize clusters into virtual sub-clusters — they can be helpful when different teams or projects share a Kubernetes cluster. Any number of namespaces are supported within a cluster, each logically separated from others but with the ability to communicate with each other.
+
+## let's get list of available namespace in cluster.
+$ kubectl get namespace / s
+
+## create a namespace with given name
+
+$ kubectl create namespace webapp
+
+## get details of namespace
+$ kubectl describe namespace/webapp
+
+## get a yaml manifest for created namespace
+$ kubectl get namespace/webapp -o yaml > ns-webapp.yml
+
+## Imperative V/S declarative deployment.
+## create a POD imperatively.
+
+$ kubectl run webserver --image=httpd:latest --namespace=webapp
+
+## describe the resource, get details about the created api object
+
+$ kubectl describe pod/webserver --namespace=webapp
+
+
+### remove the POD and redeploy using dry-run parameter way. Get the client side manifest file format generated with -o yaml switch.
+
+$ kubectl delete pod/webserver --namespace=webapp
+
+$ kubectl run webserver --image=httpd:latest --namespace=webapp --dry-run=client -o yaml
+
+## try running the pod with dry-run=server option and observer the yaml file output.
+
+$ kubectl run webserver --image=httpd:latest --namespace=webapp --dry-run=server -o yaml
+
+$ kubectl run webserver --image=httpd:latest --namespace=webapp --dry-run=client -o yaml > pod.yaml
+
+## get a POD deployed using declarative manifest file.
+
+$ kubectl create / apply -f pod.yaml
+
+## verify application running inside the container.
+
+$ kubectl exec -it pod/webserver --namespace=webapp -- /bin/bash
+
+### inside the container validate the webserver output at localhost:80 url.
+
+

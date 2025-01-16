@@ -1,12 +1,12 @@
 ### script to install containerd and kubernetes services
 ## YELLOW='\033[0;33m'
-
+## set swapping off so as to make sure the container does not run on swapped memory. 
 sudo apt-get update
 sudo swapoff -a
 sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
 
 ##echo -r "${YELLOW} Load the required kernel modules on the node"
-sleep 3
+sleep 5
 
 sudo tee /etc/modules-load.d/containerd.conf <<EOF
 overlay
@@ -24,7 +24,7 @@ net.bridge.bridge-nf-call-iptables = 1
 net.ipv4.ip_forward = 1
 EOF
 
-## reload all changes
+## reload all changes with sysctl command to configure kernel parameters.
 
 sudo sysctl --system
 

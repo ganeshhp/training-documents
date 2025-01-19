@@ -1,0 +1,15 @@
+### Jenkins Slave - Master configuration
+
+## add a node in Jenkins as Slave machine.
+
+## test the connection from Jenkins Server
+
+## run a Free style job on Jenkins Node.
+
+## Setup Tomcat Server in Node
+
+## add a new job to perform Application deployment on the node with Tomcat installed.
+
+## setup job dependency
+
+## run CI/CD

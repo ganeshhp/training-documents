@@ -1,0 +1,11 @@
+## Configure Jenkins Plugins
+
+## configure supporting tools, like Maven, Git, Java, Tomcat etc.
+
+## understand the Build lifecycle stages in Maven
+
+## try running app build from command line using Maven.
+
+## 
+
+## create the first free style Job for setting up Continuous Integration.

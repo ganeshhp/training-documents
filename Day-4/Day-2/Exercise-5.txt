@@ -1,0 +1,5 @@
+deploy: 
+curl -uganesh310724@gmail.com:<PASSWORD> -T <PATH_TO_FILE> "https://ganesh310724.jfrog.io/artifactory/project10-generic-local/<TARGET_FILE_PATH>"
+
+resolve:
+curl -uganesh310724@gmail.com:<PASSWORD> -L -O "https://ganesh310724.jfrog.io/artifactory/project10-generic-local/<TARGET_FILE_PATH>"

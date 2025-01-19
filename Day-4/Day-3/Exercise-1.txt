@@ -1,0 +1,1 @@
+## Pipeline job template using scripted and declarative pipeline script

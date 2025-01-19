@@ -1,0 +1,10 @@
+### installing Jenkins on Lab machine
+
+## initial Jenkins setup, follow step-by-step guide.
+
+## identify which plugins are to be installed and which are installed by default.
+
+## browse through the Jenkins UI.
+
+## Browse through the 'Manage Jenkins' options.
+

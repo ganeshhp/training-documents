@@ -1,0 +1,5 @@
+### Start Jira and Artifactory server.
+
+## install JIRA and Artifactory plugin
+
+## add post build action in job to create issue on job failure

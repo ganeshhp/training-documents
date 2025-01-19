@@ -1,6 +1,6 @@
 Exercise -1
 
-1) Clone the git repository from https://github.com/ganeshhp/install-kube-cluster.git
+1) Clone the git repository from https://github.com/ganeshhp/training-documents.git
 
 2) Move into the git repository and open the file install-kube-cp.sh file in editor.
 

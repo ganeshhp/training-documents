@@ -1,36 +1,33 @@
+Exercise -2 
 
-## Run all below commands from inside the project repository folder.
-## Inside the Git project repository folder, list repository versions.
+###1) On the control-plane server, under user profile folder, look for .kube folder.
 
-$ git log
+###2) Open the config file in an editor. Look for the Cluster information, Cluster context information and user information. This will make sure user authentication on the cluster using the kubectl command.
 
-$ git log -p
+###3) run below command,
 
-$ git log -p --graph
+$ kubectl config --help
 
-### check the status of repository files
+$ kubectl config get-contexts
 
-$ git status
+$ kubectl config current-context
 
-### browse through the repository folder. The .git folder is the git database folder where all database related files and folders are located.
+$ kubectl cluster-info
 
-$ ls -la
-$ cd .git
+###4) Cluster api-Resources: The Kubernetes API is a resource-based (RESTful) programmatic interface provided via HTTP. It supports retrieving, creating, updating, and deleting primary resources via the standard HTTP verbs (POST, PUT, PATCH, DELETE, GET).
+### List all available api-resources in the cluster.
 
-## check the config file
+$ kubectl api-resources
 
-$ cat config
+$ kubectl api-resources --namespaced=true/false
 
-$ cd objects
+$ kubectl api-resources --api-group='' 
 
-## check the HASH objects
+$ kubectl api-resources -o wide
 
-## Now create and git add aa file to the repository.
-## check the changes in the objects folder inside .git folder.
+$ kubectl explain <resource-name>
 
-# now commit the staged changed to the local repo. and check the objects folder contents.
+## explain command can be used on the api-resources by extending the fields interpolating.
 
-## check the contents of HEAD file
-
-$ cat HEAD
+$ kubectl explain <resource-name>.<field>.<sub-field>
 

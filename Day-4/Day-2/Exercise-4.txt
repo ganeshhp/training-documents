@@ -1,3 +1,0 @@
-### create job with Pipeline job template.
-
-## write a pipeline script using groovy script (Scripted pipeline)

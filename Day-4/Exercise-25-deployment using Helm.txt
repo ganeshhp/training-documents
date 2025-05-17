@@ -1,0 +1,144 @@
+
+-------------------
+### retrieving information on the Helm release
+
+$ helm list --all
+
+## get metadata for the release done.
+
+$ helm status mysql-release
+
+# we can view the manifest files used in the release crated using helm.
+
+$ helm get manifest mysql-release > ~/project/helm/manifest.txt
+
+## we can also get the use supplied values used in the release deployment using command,
+
+$ helm get values mysql-release > ~/project/helm/values.txt
+
+## we can view the notes using command,
+
+$ helm get notes mysql-release > ~/project/helm/notes.txt
+
+## to everything deployed we use command all.
+
+$ helm get all mysql-release > ~/project/helm/all.txt
+
+## get the history of release using history command, this shows revision version.
+
+$ helm history mysql-release.
+
+## now if we want to uninstall the release from cluster, but keep the history metadata for the release,  we use, helm list command will show the history fir the removed release as well.
+
+$ helm uninstall mysql-release --keep-history
+
+
+
+----------------
+
+Upgrading a version release.
+
+## consider we have deployed a release of version 1.0 and now we want to upgrade the version to version 1.2., we can use the command, helm upgrade.
+
+$ helm search repo stable/mysql --version
+
+$ helm install db-release stable/mysql --version 1.6.3
+
+$ helm list
+
+## validate this with kubectl get all command.
+
+## now to upgrade this version to next one,
+
+$ helm upgrade db-release stable/mysql --version 1.6.4
+
+## Note the revision value in list command and validate the same with history command.
+
+$ helm list
+
+$ helm history db-release
+
+$ kubectl get all   ### to validate facts in the background.
+
+---------------------
+
+## rolling back a release
+
+$ helm history db-release
+
+## validate the results with kubectl command output. the rollback is instrumented using the replicasets and annotation revision count.
+
+$ kubectl get all
+$ kubectl get replicasets
+
+## now from the list of release if we want to rollback the release to a specific earlier version.
+
+$ helm rollback db-release 1
+
+### here the number 1 is for the revision number.
+### check the revision history
+
+$ helm list 
+
+$ helm history db-release
+
+## one important feature in Helm is, the release history is saved in secret object that is created automatically by helm. So even if old Replicaset is deleted, we can rollback a release.
+
+$ kubectl get secrets
+
+
+-------------------------
+### repository overview
+
+repository is a HTTP server
+
+## https://hub.helm.sh
+
+### Packaging our Helm Chart
+
+$ helm create webserver    ### here  'webserver' is the name of the chart
+
+## browse thru the folder structure of the chart repository created using the create command.
+
+## to package the chart that we have created, we use the command package.
+
+## from outside the Chart (webserver in this case) folder, run the command,
+
+$ helm package .\webserver --destination '~\project\helm\chart-packages'
+
+## check the .tgz file created at the mentioned location.
+
+## we are going to use the application Chart Museum to use it as a Chart repository.
+
+$ helm install chartmuseum stable/chartmuseum --set env.open.DISABLE_API=false
+
+### get the POD name under which the chart museum is running.
+
+$ $POD_NAME=$(kubectl get pods -l "app=chartmuseum" -o jsonpath="{.items[0].metadata.name}")
+
+## add port forward for us to use the chart museum on node.
+
+$ kubectl port-forward $POD_NAME 8080:8080 -n default
+
+## add the chart museum as chart repo on local host.
+## check the repository-config-string flag in the helm --help command and note the location of the repository.yaml file
+
+$ helm --help
+
+### copy the repo path and browse to the folder path and validate the repository.yaml file
+
+## now add the chart museum as chart repo.
+
+$ helm repo add chartmuseum http://127.0.0.1:8080
+
+## push the package to the repo.
+
+$ curl --data-binary "@<package-file-name>" http://localhost:8080/api/charts
+
+### manually update the chart repo.
+
+$ helm repo update
+
+$ helm search repo chartmuseum/<chartname>
+
+

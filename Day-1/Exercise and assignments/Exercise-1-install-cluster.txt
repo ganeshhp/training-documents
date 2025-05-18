@@ -13,7 +13,11 @@ Exercise -1
 6) The script will install all required services like, containerd, kubelet and binaries like, kubectl and kubeadm on the control-plane server. This will also initialize the kubernetes cluster and install the required calico network interface.
 Follow all steps as prompted during the script installation.
 
-## Once installation process complete after successfull script execution, check status using below commands.
+----------------------------------------------------------------
+
+## we are running this cluster as a Single Node cluster so we will have to make certain changes to the Node role.
+
+## Once installation process complete after successful script execution, check status using below commands.
 
 $ kubectl get nodes 
 ## above command shows status of clustered node. Note if the node shows the status as ready.
@@ -24,7 +28,8 @@ $ kubectl run testpod --image=ubuntu:latest
 
 $ kubectl get pods
 
-## see if the status of the POD is running. If not then we will have to change the Node status. So that we wllo the control-plane Node to run Work Load.
+## see if the status of the POD is running. If not then we will have to change the Node status. So that we allow the control-plane Node to run the Work Load.
+
 ## run below command to add the role of the control-plane server with Worker Node role as well.
 
 $ kubectl taint nodes --all node-role.kubernetes.io/control-plane-

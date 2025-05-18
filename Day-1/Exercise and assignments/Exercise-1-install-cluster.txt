@@ -13,8 +13,23 @@ Exercise -1
 6) The script will install all required services like, containerd, kubelet and binaries like, kubectl and kubeadm on the control-plane server. This will also initialize the kubernetes cluster and install the required calico network interface.
 Follow all steps as prompted during the script installation.
 
-7) Install the kubernetes component on the worker node as well. This is to be done using the script, install-wrk-node.sh. Once installed, run the kubeadm join command in sudo mode with cert and token added to the command, copied from the control-plane server, cluster initiation logs.
+## Once installation process complete after successfull script execution, check status using below commands.
 
+$ kubectl get nodes 
+## above command shows status of clustered node. Note if the node shows the status as ready.
+
+## now we want to run a POD and see if the Node is able to schedule the POD.
+
+$ kubectl run testpod --image=ubuntu:latest
+
+$ kubectl get pods
+
+## see if the status of the POD is running. If not then we will have to change the Node status. So that we wllo the control-plane Node to run Work Load.
+## run below command to add the role of the control-plane server with Worker Node role as well.
+
+$ kubectl taint nodes --all node-role.kubernetes.io/control-plane-
+
+## check the status of the POD one more time and validate if it shows it as running.
  
 
 

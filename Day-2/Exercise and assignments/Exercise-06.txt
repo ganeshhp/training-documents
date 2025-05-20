@@ -1,5 +1,5 @@
 Exercise -3
-### create a file and add below code to the file.
+
 
 ### LoadBalancer Service
 
@@ -26,7 +26,6 @@ status:
 
 Externalname Service:
 
-### create a new file and ad below code to the file.
 
 apiVersion: v1
 kind: Service

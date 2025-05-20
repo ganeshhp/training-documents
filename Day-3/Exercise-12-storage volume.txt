@@ -1,0 +1,78 @@
+Exercise -2
+
+### 1) Storage objects
+
+### create a new file as deploy-localvol.yml
+
+### create the deployment object and check the local storage object.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: local-web
+  namespace: webapp
+spec:
+  replicas: 2
+  selector:
+    matchLabels: 
+      app: local-web
+  template:
+    metadata:
+      labels:
+        app: local-web
+    spec:
+      containers:
+      - name: local-web
+        image: nginx
+        ports:
+          - name: web
+            containerPort: 80
+        volumeMounts:
+          - name: local
+            mountPath: /usr/share/nginx/html
+      volumes:
+      - name: local
+        hostPath:
+          path: /var/nginxserver
+
+### validate the web-app on the container by running below commands.
+
+$ kubectl get pods --namespace=webapp
+
+## create a index.html file in /var/nginxserver folder.
+
+$ echo "hello world" > /var/nginxserver/index.html
+
+### execute command in the container and validate if the webservice is up.
+ 
+$ kubectl exec -it pod/<pod-name> -- bin/bash
+
+$ curl localhost
+
+
+
+----------------
+
+### create a service of type nodeport to expose the deployment object
+
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  name: local-web
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+    nodePort: 32000
+  selector:
+    app: local-web
+  type: NodePort
+
+
+### now validate the service on port number 32000 on the node network
+
+$ kubectl describe service/local-web --namespace=webapp
+
+$ curl localhost:32000

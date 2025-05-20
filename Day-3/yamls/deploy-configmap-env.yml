@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-configmap
+spec:
+  selector:
+    matchLabels:
+      app: myapp-configmap
+  template:
+    metadata:
+      labels:
+        app: myapp-configmap
+    spec:
+      containers:
+      - name: myapp
+        image: httpd:latest
+        ports:
+        - containerPort: 80
+        env:
+        - name: DATABASE_SERVERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: appconfigprod
+              key: DATABASE_SERVERNAME
+        - name: BACKEND_SERVERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: appconfigprod
+              key: BACKEND_SERVERNAME

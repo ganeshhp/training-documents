@@ -32,9 +32,7 @@ spec:
            - containerPort: 80
 
 ### save the file and Apply the manifest to create the Object
-### observe the events.
 
-$ kubectl get events --watch &
 
 $ kubectl create -f rc.yml
 
@@ -49,9 +47,7 @@ $ kubectl describe rc/webapp-rc
 
 $ kubectl delete -f rc.yml
 
-### Deployment Object ####  Try running the get events verb with --watch option before running the deployment.###
-
-$ kubectl get events --watch &
+### Deployment Object ####  
 
 ## Now, let's create a deployment object first imperatively, using below command.
 
@@ -63,7 +59,6 @@ $ kubectl get deployment --namespace=webapp
 
 ## observe the events as part of deployment object creation.
 
-## ctrl-c and 
 ## remove the deployment object.
 
 $ kubectl delete deployment/webserver --namespace=webapp

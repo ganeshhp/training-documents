@@ -1,6 +1,7 @@
 POD Probes:
 
 Liveness Probe and Readiness Probe
+### create a YAML file readiness-probe.yml
 
 apiVersion: apps/v1
 kind: Deployment
@@ -33,7 +34,9 @@ spec:
           initialDelaySeconds: 10
           periodSeconds: 5
 
-### now, let's make changes to the file above so that the probes will complete successfully. Change the port number 8081 to 8080 wherever present.
+### as the port number of container and that of probe are not matching, the container will be marked as failed. 
+## remove the deployment object
+### now, let's make changes to the file, Change the port number 8081 to 8080 wherever present. save the file and redeploy deployment object.  
 
 
 ## startupProbe
@@ -74,5 +77,3 @@ spec:
             port: 8080
           initialDelaySeconds: 10
           periodSeconds: 5
-
-startup probe

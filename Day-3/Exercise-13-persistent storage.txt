@@ -57,7 +57,7 @@ kind: Deployment
 metadata:
   name: nfs-web
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: nfs-web

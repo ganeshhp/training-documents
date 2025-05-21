@@ -10,7 +10,6 @@ metadata:
   name: test-cronjob
 spec:
   schedule: "* * * * *"
-  startingDeadlindSeconds: 30
   concurrencyPolicy: Allow
   successfulJobsHistoryLimit: 5
   failedJobsHistoryLimit: 2

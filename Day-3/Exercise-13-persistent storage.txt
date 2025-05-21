@@ -68,7 +68,7 @@ spec:
     spec:
       containers:
       - name: nfs-web
-        image: nginx
+        image: httpd:2.4
         ports:
           - name: web
             containerPort: 80

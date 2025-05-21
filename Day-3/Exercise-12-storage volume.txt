@@ -47,7 +47,7 @@ $ echo "hello world" > /var/nginxserver/index.html
  
 $ kubectl exec -it pod/<pod-name> -- bin/bash
 
-$ curl localhost
+$ kubectl exec -it pod/<pod-name> -- curl localhost
 
 
 

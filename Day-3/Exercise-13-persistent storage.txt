@@ -5,7 +5,7 @@ Exercise -3
 
 ### run below shell script to install nfs server on the Control-plane server
 
-$ cd install-kube-cluster
+$ cd training-documents
 
 $ git pull origin main
 

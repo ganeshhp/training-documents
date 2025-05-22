@@ -1,0 +1,47 @@
+### Let's install HELM on ubuntu Lab machine.
+
+### follow the URL https://helm.sh/docs/intro/install/ and install HELM as per steps shown.
+
+------------
+
+$ curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
+$ sudo apt-get install apt-transport-https --yes
+$ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+$ sudo apt-get update
+$ sudo apt-get install helm
+
+------------
+## adding a charts repo to the helm client environment.
+
+
+$ helm repo list
+
+$ helm repo add stable https://charts.helm.sh/stable
+
+##Searching charts from the repo.
+
+$ helm search repo stable/mysql
+$ helm search reop stable/nginx
+
+## The output shows options of charts available on the repo matching the search name.
+## to get some information about the chart, we have command,
+
+$ helm show chart stable/mysql
+
+$ helm show readme stable/mysql
+
+## if we want to get the details of values added to the chart, we can get that using command,
+
+$ helm show values stable/mysql > ~/project/helm/values.txt
+
+## now to deploy a chart from repo to cluster run below command, in dry-run mode, to validate.
+
+$ helm install mysql-release stable/mysql --dry-run --debug
+
+### here the 'mysql-release' is the name of the release in the cluster. 'stable' is repo name and 'mysql' is the chart name.
+
+$ helm install mysql-release stable/mysql
+
+## we can list the releases done to the cluster using command,
+
+$ helm list

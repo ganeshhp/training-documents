@@ -33,7 +33,9 @@ $ kubectl create -f rolebinding.yml
 
 $ kubectl auth can-i list pods     #### here we are using the default kubernetes-admin user
 
-$ kubectl auth can-i list pods --as=newuser ### add namespace
+$ kubectl auth can-i list pods --as=newuser 
+
+### add namespace
 
 $ kubectl auth can-i list pods --as=newuser -n webapp  ### correct test
 
@@ -78,7 +80,9 @@ $ kubectl create namespace webapp2
 
 $ kubectl create deployment nginx2 --image=nginx -n webapp2
 
-$ kubectl get deployment --as=newuser -n webapp2   ### so we see that the user newuser does not have access to run get query on the object in webapp2 namespace.
+$ kubectl get deployment --as=newuser -n webapp2   
+
+### so we see that the user newuser does not have access to run get query on the object in webapp2 namespace.
 
 ### we can try creating a clusterrole and then allocated the user access to multiple namespaced using rolebinding.
 

@@ -9,8 +9,7 @@ kind: CronJob
 metadata:
   name: test-cronjob
 spec:
-  schedule: "* * * * *"
-  startingDeadlindSeconds: 30
+  schedule: "*/2 * * * *"
   concurrencyPolicy: Allow
   successfulJobsHistoryLimit: 5
   failedJobsHistoryLimit: 2

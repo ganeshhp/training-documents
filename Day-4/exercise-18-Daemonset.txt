@@ -1,0 +1,51 @@
+### create a file as daemonset.yml
+
+$ nano daemonset.yml
+
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: myapp-ds
+spec:
+  selector:
+    matchLabels:
+      app: myapp-ds
+  template:
+    metadata:
+      labels:
+        app: myapp-ds
+    spec:
+      containers:
+        - name: hello-world
+          image: gcr.io/google-samples/hello-app:1.0
+
+### add below lines of code to the daemonset.yml file and run the file to create resource.
+
+---
+
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: myapp-ds-node
+spec:
+  selector:
+    matchLabels:
+      app: myapp-ds1
+  template:
+    metadata:
+      labels:
+        app: myapp-ds1
+    spec:
+      nodeSelector:
+        node: hello-world-ns
+      containers:
+        - name: hello-world
+          image: gcr.io/google-samples/hello-app:1.0
+
+$ kubectl apply -f daemonset.yml
+
+## we will also have to apply the selector label on the node on which we want the DaemonSet pod to run.
+
+$ kubectl label node <node-name> node=hello-world-ns
+
+### so with the label applied to the nodes, the DaemonSet will create a POD on the selected Node where the label changes are applied and which is matching the node-selector. If we try removing the label from the node, DaemonSet controller will automatically remove the POD from the node.

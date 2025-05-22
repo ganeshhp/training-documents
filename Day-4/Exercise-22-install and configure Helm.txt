@@ -10,6 +10,20 @@ $ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hel
 $ sudo apt-get update
 $ sudo apt-get install helm
 
+-------------------
+
+## Change directory to project folder and here we will create the Helm charts directory.
+
+$ helm create webapp
+
+## This command will generate a directory named <chart_name> with the following structure:
+
+$ cd webapp
+
+## note the file and folder created in this directory.
+## open chart.yaml file
+## open values.yaml file
+
 ------------
 ## adding a charts repo to the helm client environment.
 

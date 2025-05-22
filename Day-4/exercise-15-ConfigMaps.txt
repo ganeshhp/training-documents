@@ -1,0 +1,72 @@
+Exercise-2
+
+### creating ConfigMaps imperatively.
+
+$ kubectl create configmap appconfigprod \
+--namespace=webapp \
+--from-literal=DATABASE_SERVERNAME=sql.example.local \
+--from-literal=BACKEND_SERVERNAME=be.example.local
+
+$ kubectl create configmap appconfigqa \ 
+  --namespace=webapp \
+  --from-file=appconfigqa
+
+## get the manifest file for the configmaps to verify. Conmpare the way the data items are configured.
+
+$ kubectl get configmap/appconfigqa --namespace=webapp -o yaml
+
+$ kubectl get configmap/appconfigprod --namespace=webapp -o yaml
+
+### Now, let's use the config map in the POD template.
+
+### create a deployment object file with configmap data refered in POD template as environment variables.
+
+$ nano deploy-configmap-env.yml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-configmap
+  namespace: webapp
+spec:
+  selector:
+    matchLabels:
+      app: app-configmap
+  template:
+    metadata:
+      labels:
+        app: app-configmap
+    spec:
+      containers:
+      - name: myapp
+        image: httpd:2.4
+        ports:
+        - containerPort: 80
+        env:
+        - name: DATABASE_SERVERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: appconfigprod
+              key: DATABASE_SERVERNAME
+        - name: BACKEND_SERVERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: appconfigprod
+              key: BACKEND_SERVERNAME
+
+## now get into the POD using exec command and verify the variables  using env command.
+
+$ kubectl get pods --namespace=webapp
+
+## grab the POD name that belongs to the configMap deployment object.
+
+$ kubectl exec -it pod/<pod-name> --namespace=webapp -- /bin/bash
+
+## on the container prompt, run below command.
+
+$ env | sort
+
+$ exit
+
+
+## the configMap can also be referred in side POD template as a volume as well. 

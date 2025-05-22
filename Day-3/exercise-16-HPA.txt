@@ -1,0 +1,87 @@
+#Scale up / down replicas
+$ kubectl scale deployment webserver --replicas=4
+
+#Horizontal POD Autoscaler (HPA):
+#To AutoScale existing deployment object in cluster.
+
+## we will start with deploying a PHP-apache application and then we will increase the Load on the server to see, how the autoscaling takes place.
+
+### In case of Using Minikube for running kubernetes cluster, we will have to enable metrics-server using below command.
+
+$ minikube addons enable metrics-server
+
+1) create the deployment object to create once replica of the PHP-Apache application POD. Also deploy a service to expose the application internally in the cluster.
+
+$ nano deployNservice-hpa.yml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: php-apache
+spec:
+  selector:
+    matchLabels:
+      run: php-apache
+  template:
+    metadata:
+      labels:
+        run: php-apache
+    spec:
+      containers:
+      - name: php-apache
+        image: registry.k8s.io/hpa-example
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: 500m
+          requests:
+            cpu: 200m
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: php-apache
+  labels:
+    run: php-apache
+spec:
+  ports:
+  - port: 80
+  selector:
+    run: php-apache
+
+## save file and run below command.
+
+$ kubectl create -f deployNservice-hpa.yml
+
+### now let's create a HPA to allow autoscaling of deployment object.
+
+$ kubectl autoscale deployment php-apache --cpu-percent=50 --min=1 --max=10
+
+##$ kubectl autoscale deployment/my-deployment --min=2 --max=10
+
+##$ kubectl autoscale deployment/my-deployment --max=10 --cpu-percent=80
+
+$ kubectl get hpa
+
+### now let's create POD to send queries to the PHP-Apache application to increase the load and resource utilization.
+### run below command in a separate terminal
+
+$ kubectl run -i --tty load-generator --rm --image=busybox:1.28 --restart=Never -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://php-apache; done"
+
+### now run the HPA status with --watch option.
+
+$ kubectl get hpa php-apache --watch
+
+$ ctrl+c
+
+$ kubectl get deployment php-apache
+
+### In the terminal where we have start the load generator, use ctrl+c to kill the process and stop the load generator.
+
+$ kubectl get deployment php-apache
+
+### note the scaling down process of PODs when load generator is stopped.
+
+
+
